@@ -64,6 +64,15 @@ class KeywordSearcher():
         self.__mode = self.__video_mode
         self.__page_num = 1
 
+    @classmethod
+    def extract_links(cls, soup, pattern):
+        """extracts links following a given pattern from beautiful soup
+            -> uses pattern as starting point for extraction
+        """
+        return [cls.base_url + str(link)[str(link).find(pattern):]
+                for link in soup.find_all('a')
+                if pattern in str(link)]
+
     def get_media_links(self):
         """gets current page numbers page links as a list of strings
         """
@@ -74,19 +83,20 @@ class KeywordSearcher():
             search_url = self.base_url + search_add
             req = requests.get(search_url)
             soup = BeautifulSoup(req.content, 'html.parser')
-            links = [self.base_url + str(link)[str(link).find("/video/clip"):]
-                     for link in soup.find_all('a')
-                     if "/video/clip" in str(link)]
-            real_links = []
-            for link in links:
-                real_links.append(link[:link.find('"><div class="')])
-            return real_links
+            del req
+            links = self.extract_links(soup, "/video/clip")
+            real_links = [link[:link.find('"><div class="')] for link in links]
         elif self.mode == self.__image_mode:
             image_term = self.get_image_term()
             search_add = urllib.parse.urlencode({'image_type': 'all',
              'search_source': 'base_search_form', 'language': 'en',
              'searchterm': image_term, 'page': self.__page_num, 'section': 1})
             search_url = self.base_url + '/search?' + search_add
-            return search_url
+            req = requests.get(search_url)
+            soup = BeautifulSoup(req.content, 'html.parser')
+            del req
+            links = self.extract_links(soup, "/image-photo/")
+            real_links = [link[:link.find('">\n<div')] for link in links]
         else:
             raise Exception("KeywordSearcher is in an unknown mode")
+        return real_links

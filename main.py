@@ -12,6 +12,8 @@ def main():
     for link in links:
         print(link)
     searcher.set_image_mode()
-    print(searcher.get_media_links())
+    links = searcher.get_media_links()
+    for link in links:
+        print(link)
 
 main()
