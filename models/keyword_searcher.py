@@ -37,6 +37,10 @@ class KeywordSearcher():
     def mode(self):
         return self.__mode
 
+    @property
+    def page_num(self):
+        return self.__page_num
+
     def inc_page_num():
         """increments the page number
         """

@@ -2,6 +2,7 @@
 
 
 from models.keyword_searcher import KeywordSearcher
+from models.search_result import MediaResult
 
 
 def main():
@@ -9,13 +10,12 @@ def main():
     """
     searcher = KeywordSearcher("california trees")
     links = searcher.get_media_links()
-    keywords = searcher.get_keywords(links[0])            
-    for w in keywords:
-        print(w)
-    searcher.set_image_mode()
-    links = searcher.get_media_links()
-    keywords = searcher.get_keywords(links[0])
-    for w in keywords:
-        print(w)
+    page_results = []
+    for media in links:
+        keywords = searcher.get_keywords(media)
+        result = MediaResult(keywords, searcher.page_num)
+        print(result.keywords)
+        page_results.append(result)
 
+    print(page_results.pop().result_n)
 main()
