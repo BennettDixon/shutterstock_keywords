@@ -100,3 +100,30 @@ class KeywordSearcher():
         else:
             raise Exception("KeywordSearcher is in an unknown mode")
         return real_links
+
+    def get_keywords(self, link):
+        """extracts key word list for given media link
+        """
+        req = requests.get(link)
+        soup = BeautifulSoup(req.content, 'html.parser')
+        del req
+        if self.mode == self.__video_mode:
+            links = self.extract_links(soup, "/video/search/")
+        elif self.mode == self.__image_mode:
+            links = self.extract_links(soup, "/search/")
+        else:
+            raise Exception("KeywordSearcher is in an unknown mode")
+        keyword_links = [link[:link.find('">')] for link in links]
+        keywords = [link.split('/')[-1] for link in keyword_links]
+        bad_words = []
+        for keyword in keywords:
+            bad_key = False
+            for c in keyword:
+                if not (ord(c) <= ord('z') and ord(c) >= ord('a')) and not\
+                (ord(c) <= ord('Z') and ord(c) >= ord('A')):
+                    bad_key = True
+            if bad_key is True:
+                bad_words.append(keyword)
+        for word in bad_words:
+            keywords.remove(word)
+        return keywords
