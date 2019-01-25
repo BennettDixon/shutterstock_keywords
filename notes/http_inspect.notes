@@ -1,0 +1,49 @@
+# GENERAL FLOW
+Grab search term e.g: "cali trees"
+determine mode e.g: "video" or "photo"
+construct search string for mode / term
+start on page 1, stop on 404 or when page i > 99 (100 pages)
+	-> grab all links on page
+	-> grab all vid/img links
+	-> loop through those links for the page
+		-> grab key word
+		-> add key word to results
+			-> OOP (automatically do ranking stuff)
+
+# RANKING / RESULT STUFF
+the number of times used overall
+weighted rank:
+	-> similar to no times used, but when adding instead of
+		adding just one, add:
+	-> no_k_w_occurances += (1 - ((page_i + 1) * 0.01))
+
+
+# VIDEO
+To progress through video pages do this, change the number at end
+https://www.shutterstock.com/video/search/california-trees?page=2
+https://www.shutterstock.com/video/search/california-trees?page=3
+
+To find videos in the pages:
+Scrape all links on above pages,
+find links containing the pattern: /video/clip-*
+those are links to clips.
+
+To find keywords after gathering a list of videos for given search term:
+Take all links that were scraped previously
+Find links containing the pattern: /video/search/*
+where * is ultimately the name of the keyword.
+split based on the '/' and take the last element
+that is your keyword. Do that for all links of pattern,
+These are your keywords for given video.
+
+
+
+# PHOTO
+To progress through images it more complex, url encoding needed, image type, search source, language, and page needed, and section
+https://www.shutterstock.com/search?searchterm=California%20trees&image_type=all&search_source=base_search_form&language=en&page=2&section=1
+
+grab image links:
+pattern: /image-photo/*
+
+grab keywors:
+pattern: /search/*
