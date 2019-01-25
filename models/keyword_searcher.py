@@ -3,6 +3,7 @@
 
 import requests
 from bs4 import BeautifulSoup
+import urllib
 
 
 class KeywordSearcher():
@@ -49,19 +50,21 @@ class KeywordSearcher():
     def get_image_term(self):
         """gets the search term encoded for use with img url pattern
         """
-        raise NotImplementedError('need to implement')
+        return self.search_term
 
     def set_image_mode(self):
         """sets the current mode to image mode regardless of state
         """
         self.__mode = self.__image_mode
+        self.__page_num = 1
 
     def set_video_mode(self):
         """sets the current mode to video mode regardless of state
         """
         self.__mode = self.__video_mode
+        self.__page_num = 1
 
-    def get_page_links(self):
+    def get_media_links(self):
         """gets current page numbers page links as a list of strings
         """
         if self.mode == self.__video_mode:
@@ -78,3 +81,12 @@ class KeywordSearcher():
             for link in links:
                 real_links.append(link[:link.find('"><div class="')])
             return real_links
+        elif self.mode == self.__image_mode:
+            image_term = self.get_image_term()
+            search_add = urllib.parse.urlencode({'image_type': 'all',
+             'search_source': 'base_search_form', 'language': 'en',
+             'searchterm': image_term, 'page': self.__page_num, 'section': 1})
+            search_url = self.base_url + '/search?' + search_add
+            return search_url
+        else:
+            raise Exception("KeywordSearcher is in an unknown mode")

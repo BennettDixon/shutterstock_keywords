@@ -8,9 +8,10 @@ def main():
     """entry point for program
     """
     searcher = KeywordSearcher("california trees")
-    links = searcher.get_page_links()
+    links = searcher.get_media_links()
     for link in links:
         print(link)
-
+    searcher.set_image_mode()
+    print(searcher.get_media_links())
 
 main()
