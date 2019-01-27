@@ -32,6 +32,14 @@ $ sudo apt-get install git
 $ sudo apt-get install python3
 ```
 
+```
+$ sudo pip3 install requests
+```
+
+```
+$ sudo pip3 install bs4
+```
+
 ## :blue_book: Authors
 * **Bennett Dixon** - [@BennettDixon](https://github.com/BennettDixon)
 
