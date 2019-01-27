@@ -41,7 +41,7 @@ class KeywordSearcher():
     def page_num(self):
         return self.__page_num
 
-    def inc_page_num():
+    def inc_page_num(self):
         """increments the page number
         """
         self.__page_num += 1

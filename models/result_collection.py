@@ -59,8 +59,14 @@ class ResultCollection():
                 if kw not in ranking_list.keys():
                     ranking_list[kw] = KeywordRank(kw)
                 ranking_list[kw].occurances += 1
-                ranking_list[kw].page_rank += (1 - (result.page_num * 0.01))
-                ranking_list[kw].overall_rank += (1 - (result.result_n * 0.001))
+                diff = (1 - (result.page_num * 0.01))
+                if diff < 0:
+                    diff = 0
+                ranking_list[kw].page_rank += diff
+                diff = (1 - (result.result_n * 0.001))
+                if diff < 0:
+                    diff = 0.001
+                ranking_list[kw].overall_rank += diff
         ranking_list = sorted(ranking_list.items(), key=lambda kv: kv[1].overall_rank, reverse=True)
         self.__ranking = ranking_list
         return self.ranking
