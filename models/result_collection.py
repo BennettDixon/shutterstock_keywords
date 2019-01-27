@@ -11,7 +11,7 @@ class ResultCollection():
     def __init__(self, search_term):
         self.__results = list()
         self.search_term = search_term
-        self.__ranking = dict()
+        self.__ranking = list()
 
     def append_result(self, value):
         """appends a result to results attr,
@@ -67,6 +67,6 @@ class ResultCollection():
                 if diff < 0:
                     diff = 0.001
                 ranking_list[kw].overall_rank += diff
-        ranking_list = sorted(ranking_list.items(), key=lambda kv: kv[1].overall_rank, reverse=True)
+        ranking_list = sorted(ranking_list.values(), key=lambda k: k.overall_rank, reverse=True)
         self.__ranking = ranking_list
         return self.ranking
