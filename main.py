@@ -19,5 +19,9 @@ def main():
         print(result.keywords)
         results.append_result(result)
 
-    print(page_results.pop().result_n)
+    results.generate_ranking()
+    for kw_tup in results.ranking:
+        if len(kw_tup) > 1:
+            print("Key:{}\nOverall Rank:{}\nPage Rank:{}\nOccurances:{}\n".format(kw_tup[0], kw_tup[1].overall_rank, kw_tup[1].page_rank, kw_tup[1].occurances))
+    print(results.results.pop().result_n)
 main()
